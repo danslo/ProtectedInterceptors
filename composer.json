@@ -1,0 +1,14 @@
+{
+  "name": "danslo/magento2-module-protected-interceptors",
+  "description": "Allows you to create Magento 2 plugins for protected methods.",
+  "type": "magento2-module",
+  "license": "MIT",
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Danslo\\ProtectedInterceptors\\": ""
+    }
+  }
+}
