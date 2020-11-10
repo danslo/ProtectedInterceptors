@@ -7,6 +7,9 @@ namespace Danslo\ProtectedInterceptors\Interception\Code\Generator;
 
 class Interceptor extends \Magento\Framework\Interception\Code\Generator\Interceptor
 {
+    private $ignores = [
+        \Magento\Customer\Model\ResourceModel\CustomerRepository::class => ['addFilterGroupToCollection']
+    ];
     /**
      * Returns list of methods for class generator.
      *
@@ -28,7 +31,7 @@ class Interceptor extends \Magento\Framework\Interception\Code\Generator\Interce
 
         $interceptedMethods = $reflectionClass->getMethods($methodFilter);
         foreach ($interceptedMethods as $method) {
-            if ($this->isInterceptedMethod($method)) {
+            if ($this->isInterceptedMethod($method) && !$this->isIgnoredMethod($method)) {
                 $methods[] = $this->_getMethodInfo($method);
             }
         }
@@ -46,5 +49,14 @@ class Interceptor extends \Magento\Framework\Interception\Code\Generator\Interce
         $methodInfo = parent::_getMethodInfo($method);
         $methodInfo['visibility'] = $method->isProtected() ? 'protected' : 'public';
         return $methodInfo;
+    }
+
+    private function isIgnoredMethod(\ReflectionMethod $method): bool
+    {
+        if (!isset($this->ignores[$method->getDeclaringClass()->getName()])) {
+            return false;
+        }
+
+        return in_array($method->getName(), $this->ignores[$method->getDeclaringClass()->getName()], true);
     }
 }
