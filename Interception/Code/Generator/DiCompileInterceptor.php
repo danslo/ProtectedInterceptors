@@ -5,7 +5,7 @@
  */
 namespace Danslo\ProtectedInterceptors\Interception\Code\Generator;
 
-class Interceptor extends \Magento\Framework\Interception\Code\Generator\Interceptor
+class DiCompileInterceptor extends \Magento\Setup\Module\Di\Code\Generator\Interceptor
 {
     use GetClassMethodsTrait;
 }
